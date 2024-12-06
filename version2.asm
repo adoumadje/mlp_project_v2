@@ -15,7 +15,7 @@ section .data
     len_add equ $ - add_res
     add_banner db "############# Addition Start ############", 0xA, 0xD
     len_add_ban equ $ - add_banner
-    add_closer db "############# Addition Finish ############", 0xA, 0xD
+    add_closer db 10, "############# Addition Finish ############", 0xA, 0xD
     len_add_closer equ $ - add_closer
 
     sub_msg db "2-substraction(-)", 0xA, 0xD
@@ -24,7 +24,7 @@ section .data
     len_sub equ $ - sub_res
     sub_banner db "############# Substraction Start ############", 0xA, 0xD
     len_sub_ban equ $ - sub_banner
-    sub_closer db "############# Substraction Finish ############", 0xA, 0xD
+    sub_closer db 10, "############# Substraction Finish ############", 0xA, 0xD
     len_sub_closer equ $ - sub_closer
 
     mul_msg db "3-multiplication(*)", 0xA, 0xD
@@ -33,7 +33,7 @@ section .data
     len_mul equ $ - mul_res
     mul_banner db "############# Multiplication Start ############", 0xA, 0xD
     len_mul_ban equ $ - mul_banner
-    mul_closer db "############# Multiplication Finish ############", 0xA, 0xD
+    mul_closer db 10, "############# Multiplication Finish ############", 0xA, 0xD
     len_mul_closer equ $ - mul_closer
 
     div_msg db "4-division(/)", 0xA, 0xD
@@ -42,7 +42,7 @@ section .data
     len_div equ $ - div_res
     div_banner db "############# Division Start ############", 0xA, 0xD
     len_div_ban equ $ - div_banner
-    div_closer db "############# Division Finish ############", 0xA, 0xD
+    div_closer db 10, "############# Division Finish ############", 0xA, 0xD
     len_div_closer equ $ - div_closer
 
     inc_msg db "5-increment(++)", 0xA, 0xD
@@ -51,7 +51,7 @@ section .data
     len_inc equ $ - inc_res
     inc_banner db "############# Increment Start ############", 0xA, 0xD
     len_inc_ban equ $ - inc_banner
-    inc_closer db "############# Increment Finish ############", 0xA, 0xD
+    inc_closer db 10, "############# Increment Finish ############", 0xA, 0xD
     len_inc_closer equ $ - inc_closer
 
     dec_msg db "6-decrement(--)", 0xA, 0xD
@@ -60,7 +60,7 @@ section .data
     len_dec equ $ - dec_res
     dec_banner db "############# Decrement Start ############", 0xA, 0xD
     len_dec_ban equ $ - dec_banner
-    dec_closer db "############# Decrement Finish ############", 0xA, 0xD
+    dec_closer db 10, "############# Decrement Finish ############", 0xA, 0xD
     len_dec_closer equ $ - dec_closer
 
     mod_msg db "7-modulo(%)", 0xA, 0xD
@@ -69,7 +69,7 @@ section .data
     len_mod equ $ - mod_res
     mod_banner db "############# Modulo Start ############", 0xA, 0xD
     len_mod_ban equ $ - mod_banner
-    mod_closer db "############# Modulo Finish ############", 0xA, 0xD
+    mod_closer db 10, "############# Modulo Finish ############", 0xA, 0xD
     len_mod_closer equ $ - mod_closer
 
     exit_msg db "8-exit", 0xA, 0xD
@@ -202,6 +202,53 @@ addition:
 
     mov eax, SYS_WRITE
     mov ebx, STDOUT
+    mov ecx, num1_prompt
+    mov edx, len_pt1
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num1
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num2_prompt
+    mov edx, len_pt2
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num2
+    mov edx, 2
+    int 0x80
+
+    mov eax, [num1]
+    sub eax, '0'
+
+    mov ebx, [num2]
+    sub ebx, '0'
+
+    add eax, ebx
+    add eax, '0'
+
+    mov [res], eax
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, add_res
+    mov edx, len_add
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, res
+    mov edx, 1
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
     mov ecx, add_closer
     mov edx, len_add_closer
     int 0x80
@@ -215,6 +262,53 @@ substraction:
     mov ebx, STDOUT
     mov ecx, sub_banner
     mov edx, len_sub_ban
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num1_prompt
+    mov edx, len_pt1
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num1
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num2_prompt
+    mov edx, len_pt2
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num2
+    mov edx, 2
+    int 0x80
+
+    mov eax, [num1]
+    sub eax, '0'
+
+    mov ebx, [num2]
+    sub ebx, '0'
+
+    sub eax, ebx
+    add eax, '0'
+
+    mov [res], eax
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, sub_res
+    mov edx, len_sub
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, res
+    mov edx, 1
     int 0x80
 
     mov eax, SYS_WRITE
@@ -236,6 +330,53 @@ multiplication:
 
     mov eax, SYS_WRITE
     mov ebx, STDOUT
+    mov ecx, num1_prompt
+    mov edx, len_pt1
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num1
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num2_prompt
+    mov edx, len_pt2
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num2
+    mov edx, 2
+    int 0x80
+
+    mov al, [num1]
+    sub al, '0'
+
+    mov bl, [num2]
+    sub bl, '0'
+
+    mul bl
+    add al, '0'
+
+    mov [res], al
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, mul_res
+    mov edx, len_mul
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, res
+    mov edx, 1
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
     mov ecx, mul_closer
     mov edx, len_mul_closer
     int 0x80
@@ -248,6 +389,53 @@ division:
     mov ebx, STDOUT
     mov ecx, div_banner
     mov edx, len_div_ban
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num1_prompt
+    mov edx, len_pt1
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num1
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num2_prompt
+    mov edx, len_pt2
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num2
+    mov edx, 2
+    int 0x80
+
+    mov al, [num1]
+    sub al, '0'
+
+    mov bl, [num2]
+    sub bl, '0'
+
+    div bl
+    add al, '0'
+
+    mov [res], al
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, div_res
+    mov edx, len_div
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, res
+    mov edx, 1
     int 0x80
 
     mov eax, SYS_WRITE
@@ -268,6 +456,34 @@ increment:
 
     mov eax, SYS_WRITE
     mov ebx, STDOUT
+    mov ecx, num_prompt
+    mov edx, len_pt
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num
+    mov edx, 2
+    int 0x80
+
+    mov ebx, [num]
+    inc ebx
+    mov [num], ebx
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, inc_res
+    mov edx, len_inc
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
     mov ecx, inc_closer
     mov edx, len_inc_closer
     int 0x80
@@ -284,6 +500,34 @@ decrement:
 
     mov eax, SYS_WRITE
     mov ebx, STDOUT
+    mov ecx, num_prompt
+    mov edx, len_pt
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num
+    mov edx, 2
+    int 0x80
+
+    mov ebx, [num]
+    dec ebx
+    mov [num], ebx
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, dec_res
+    mov edx, len_dec
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
     mov ecx, dec_closer
     mov edx, len_dec_closer
     int 0x80
@@ -296,6 +540,53 @@ modulo:
     mov ebx, STDOUT
     mov ecx, mod_banner
     mov edx, len_mod_ban
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num1_prompt
+    mov edx, len_pt1
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num1
+    mov edx, 2
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, num2_prompt
+    mov edx, len_pt2
+    int 0x80
+
+    mov eax, SYS_READ
+    mov ebx, STDIN
+    mov ecx, num2
+    mov edx, 2
+    int 0x80
+
+    mov al, [num1]
+    sub al, '0'
+
+    mov bl, [num2]
+    sub bl, '0'
+
+    div bl
+    add ah, '0'
+
+    mov [res], ah
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, mod_res
+    mov edx, len_mod
+    int 0x80
+
+    mov eax, SYS_WRITE
+    mov ebx, STDOUT
+    mov ecx, res
+    mov edx, 1
     int 0x80
 
     mov eax, SYS_WRITE
